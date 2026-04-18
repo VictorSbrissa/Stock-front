@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocation } from "wouter";
-import { LogOut, Users, ShoppingCart, Settings, Package } from "lucide-react";
+import { LogOut, Users, ShoppingCart, Settings, Package, Bot } from "lucide-react";
 
 export default function Home() {
     const { user, logout, hasRole } = useAuth();
@@ -44,8 +44,35 @@ export default function Home() {
 
             {/* Main Content */}
 
+
             <main className="max-w-7xl mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                    {/* Admin - full width */}
+                    {hasRole("Admin") && (
+                        <Card
+                            className="hover:shadow-lg transition-shadow cursor-pointer col-span-1 md:col-span-2 lg:col-span-3"
+                            onClick={() => setLocation("/admin")}
+                        >
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <Settings className="h-5 w-5 text-violet-600" />
+                                    Administração
+                                </CardTitle>
+                                <CardDescription>Gerenciar tenants e roles</CardDescription>
+                            </CardHeader>
+                            <CardContent className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-3xl font-bold text-slate-900">⚙️</p>
+                                    <p className="text-sm text-muted-foreground mt-2">
+                                        Clique para acessar
+                                    </p>
+                                </div>
+                                <Settings className="h-16 w-16 text-violet-200" />
+                            </CardContent>
+                        </Card>
+                    )}
+
                     {/* Clientes Card */}
                     {hasRole("UsuarioComum") && (
                         <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/clients")}>
@@ -97,22 +124,66 @@ export default function Home() {
                         </Card>
                     )}
 
-                    {/* Admin Card - Apenas para Admins */}
-                    {hasRole("Admin") && (
-                        <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/admin")}>
+                    {/* Assistente IA Card */}
+                    {/*{hasRole("UsuarioComum") && (*/}
+                    {/*    <Card className="hover:shadow-lg transition-shadow cursor-pointer " onClick={() => setLocation("/chat")}>*/}
+                    {/*        <CardHeader>*/}
+                    {/*            <CardTitle className="flex items-center gap-2">*/}
+                    {/*                <Bot className="h-5 w-5 text-violet-600" />*/}
+                    {/*                Assistente IA*/}
+                    {/*            </CardTitle>*/}
+                    {/*            <CardDescription>Consulte seus dados em linguagem natural</CardDescription>*/}
+                    {/*        </CardHeader>*/}
+                    {/*        <CardContent>*/}
+                    {/*            <p className="text-3xl font-bold text-slate-900">Pergunte</p>*/}
+                    {/*            <p className="text-sm text-muted-foreground mt-2">Clique para acessar</p>*/}
+                    {/*        </CardContent>*/}
+                    {/*    </Card>*/}
+                    {/*)}*/}
+
+                    {/* Assistente IA Card - full width */}
+                    {hasRole("UsuarioComum") && (
+                        <Card
+                            className="hover:shadow-lg transition-shadow cursor-pointer col-span-1 md:col-span-2 lg:col-span-3"
+                            onClick={() => setLocation("/chat")}
+                        >
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
-                                    <Settings className="h-5 w-5 text-purple-600" />
-                                    Administração
+                                    <Bot className="h-5 w-5 text-violet-600" />
+                                    Assistente IA
                                 </CardTitle>
-                                <CardDescription>Gerenciar tenants e roles</CardDescription>
+                                <CardDescription>Consulte seus dados em linguagem natural</CardDescription>
                             </CardHeader>
-                            <CardContent>
-                                <p className="text-3xl font-bold text-slate-900">⚙️</p>
-                                <p className="text-sm text-muted-foreground mt-2">Clique para acessar</p>
+                            <CardContent className="flex items-center justify-between">
+                                <div>
+                                    <p className="text-3xl font-bold text-slate-900">Pergunte aos seus dados</p>
+                                    <p className="text-sm text-muted-foreground mt-2">
+                                        Ex: "Quantos clientes tenho?", "Qual foi minha última venda?", "Quantas vendas fiz esse mês?"
+                                    </p>
+                                </div>
+                                <Bot className="h-16 w-16 text-violet-200" />
                             </CardContent>
                         </Card>
                     )}
+
+                    
+
+                    {/* Admin Card - Apenas para Admins */}
+                    {/*{hasRole("Admin") && (*/}
+                    {/*    <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/admin")}>*/}
+                    {/*        <CardHeader>*/}
+                    {/*            <CardTitle className="flex items-center gap-2">*/}
+                    {/*                <Settings className="h-5 w-5 text-purple-600" />*/}
+                    {/*                Administração*/}
+                    {/*            </CardTitle>*/}
+                    {/*            <CardDescription>Gerenciar tenants e roles</CardDescription>*/}
+                    {/*        </CardHeader>*/}
+                    {/*        <CardContent>*/}
+                    {/*            <p className="text-3xl font-bold text-slate-900">⚙️</p>*/}
+                    {/*            <p className="text-sm text-muted-foreground mt-2">Clique para acessar</p>*/}
+                    {/*        </CardContent>*/}
+                    {/*    </Card>*/}
+                    {/*)}*/}
                 </div>
 
                 {/* Welcome Section */}
@@ -133,6 +204,10 @@ export default function Home() {
                         <div className="p-4 bg-orange-50 rounded-lg border border-orange-200">
                             <h3 className="font-semibold text-orange-900 mb-2">📦 Estoque</h3>
                             <p className="text-sm text-orange-700">Gerencie produtos, quantidades em estoque e movimentações.</p>
+                        </div>
+                        <div className="p-4 bg-violet-50 rounded-lg border border-violet-200">
+                            <h3 className="font-semibold text-violet-900 mb-2">🤖 Assistente IA</h3>
+                            <p className="text-sm text-violet-700">Faça perguntas sobre seus dados em linguagem natural. Ex: "quantos clientes tenho?"</p>
                         </div>
                     </div>
                 </div>
